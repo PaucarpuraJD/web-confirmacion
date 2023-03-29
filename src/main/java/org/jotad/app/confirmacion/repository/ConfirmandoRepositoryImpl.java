@@ -23,7 +23,6 @@ public class ConfirmandoRepositoryImpl implements CrudRepository<Confirmando> {
             psmt.setString(1,texto);
             try(Resulset rs = conn.executeQuery){
                 while(rs.next){
-                    Confirmando confirmando = new Confirmando();
                 }
             }
         }
