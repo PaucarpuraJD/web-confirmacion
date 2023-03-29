@@ -4,6 +4,7 @@ import org.jotad.app.confirmacion.models.Confirmando;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,12 @@ public class ConfirmandoRepositoryImpl implements CrudRepository<Confirmando> {
     public List<Confirmando> list(String texto) throws SQLException {
         List<Confirmando> confirmandos = new ArrayList<>();
         try (PreparedStatement psmt = conn.prepareStatement("")){
-
+            psmt.setString(1,texto);
+            try(ResultSet rs = psmt.executeQuery()){
+                while(rs.next()){
+                    Confirmando confirmando = new Confirmando();
+                }
+            }
         }
         return confirmandos;
     }
