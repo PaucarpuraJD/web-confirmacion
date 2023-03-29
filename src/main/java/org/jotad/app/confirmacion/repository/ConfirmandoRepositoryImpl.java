@@ -1,6 +1,7 @@
 package org.jotad.app.confirmacion.repository;
 
 import org.jotad.app.confirmacion.models.Confirmando;
+import org.jotad.app.confirmacion.models.Sacramento;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,11 +21,14 @@ public class ConfirmandoRepositoryImpl implements CrudRepository<Confirmando> {
     @Override
     public List<Confirmando> list(String texto) throws SQLException {
         List<Confirmando> confirmandos = new ArrayList<>();
-        try (PreparedStatement psmt = conn.prepareStatement("")){
+        String sql = "SELECT c.*, s.nombre AS sacramento FROM confirmandos AS c INNER JOIN sacramentos " +
+                " AS s ON (c.sacramento_id=s.id) WHERE nombre LIKE ? ORDER BY id ASC";
+        try (PreparedStatement psmt = conn.prepareStatement(sql)){
             psmt.setString(1,texto);
             try(ResultSet rs = psmt.executeQuery()){
                 while(rs.next()){
-                    Confirmando confirmando = new Confirmando();
+                    Confirmando confirmando = getConfirmando(rs);
+                    confirmandos.add(confirmando);
                 }
             }
         }
@@ -44,5 +48,19 @@ public class ConfirmandoRepositoryImpl implements CrudRepository<Confirmando> {
     @Override
     public void delete(Integer id) throws SQLException {
 
+    }
+
+    private static Confirmando getConfirmando(ResultSet rs) throws SQLException {
+        Confirmando confirmando = new Confirmando();
+        confirmando.setId(rs.getInt("id"));
+        confirmando.setNombre(rs.getString("nombre"));
+        confirmando.setDireccion(rs.getString("direccion"));
+        confirmando.setTelefono(rs.getString("telefono"));
+        confirmando.setFechaNacimiento(rs.getDate("fehca_nacimiento").toLocalDate());
+        Sacramento sacramento = new Sacramento();
+        sacramento.setId(rs.getInt("sacramento_id"));
+        sacramento.setNombre(rs.getString("sacramento"));
+        confirmando.setSacramento(sacramento);
+        return confirmando;
     }
 }
