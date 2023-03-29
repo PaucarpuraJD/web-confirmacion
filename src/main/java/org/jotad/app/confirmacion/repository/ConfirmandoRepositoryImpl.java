@@ -20,7 +20,12 @@ public class ConfirmandoRepositoryImpl implements CrudRepository<Confirmando> {
     public List<Confirmando> list(String texto) throws SQLException {
         List<Confirmando> confirmandos = new ArrayList<>();
         try (PreparedStatement psmt = conn.prepareStatement("")){
-            
+            psmt.setString(1,texto);
+            try(Resulset rs = conn.executeQuery){
+                while(rs.next){
+                    Confirmando confirmando = new Confirmando();
+                }
+            }
         }
         return confirmandos;
     }
