@@ -29,6 +29,7 @@ public class ConfirmandoRepositoryImpl implements CrudRepository<Confirmando> {
                 while(rs.next()){
                     Confirmando confirmando = getConfirmando(rs);
                     confirmandos.add(confirmando);
+
                 }
             }
         }
